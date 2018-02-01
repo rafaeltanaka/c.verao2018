@@ -15,7 +15,7 @@ function calculaUltimoDiaDoCalendario() {
     let ultimoDiaDoMes = new Date(ano, mes + 1, 1);
     ultimoDiaDoMes.setDate(ultimoDiaDoMes.getDate() - 1);
     let ultimoDiaDoCalendario = new Date();
-    ultimoDiaDoCalendario.setDate(ultimoDiaDoCalendario.getDate() + (6 - diaDaSemana));
+    ultimoDiaDoCalendario.setDate(ultimoDiaDoMes.getDate() + (6 - ultimoDiaDoMes.getDay()));
     return ultimoDiaDoCalendario;
 };
 var primeiro = calculaPrimeiroDiaDoCalendario();
@@ -31,13 +31,15 @@ while (diaAtual <= ultimo) {
     var divDia = document.createElement('div');
     divDia.innerHTML = diaAtual.getDate();
     var classe = 'dia-container dia-' + diaAtual.getDay();
+    var id = diaAtual.getFullYear();
+        id += ' - ' + (diaAtual.getMonth() + 1);
+        id += ' - ' + diaAtual.getDate();
     divDia.setAttribute('class', classe);
-    divDia.setAttribute('id', diaAtual.toISOString());
-    divDia.onclick = function() {
-        console.log('works');
-    };
-    divDia.onclick = function(evento) {
-        console.log(this.id);
+    divDia.setAttribute('id', id);
+    divDia.onclick = function(evento) { /* mudar css de overlay e formulario */
+        overlay.style.display = 'block';
+        formulario.style.display = 'flex';
+        salvar.setAttribute('data-dia', this.id);
     };
     // divDia.className = 'dia-container'
     linha.appendChild(divDia);
@@ -49,6 +51,37 @@ while (diaAtual <= ultimo) {
     if ((diaAtual.getDate() == dia) && (diaAtual.getMonth() == mes)) {
         divDia.setAttribute('class', classe + ' hoje');
     };
-    diaAtual.setDate(diaAtual.getDate() + 1);    
+    diaAtual.setDate(diaAtual.getDate() + 1);
 };
 
+// OVERLAY e FORMULÁRIO desaparecem
+var overlay = document.querySelector('#overlay');
+overlay.onclick = function(evento) {
+    this.style.display = 'none';
+    var formulario = document.querySelector('#formulario');
+    formulario.style.display = 'none';
+    salvar.setAttribute('data-dia', '');
+}
+
+//*SALVAR
+var salvar = document.querySelector('#salvar');
+salvar.onclick = function(evento) {
+    var titulo = document.querySelector('#titulo');
+    var local = document.querySelector('#local');
+    var eventos = JSON.parse(localStorage.getItem('eventos') || "{}"); /* json.parse transforma em string */
+    // if (!eventos) {
+    //     eventos = {};
+    // } else {
+
+    // }
+    var dia = this.getAttribute('data-dia');
+    eventos[dia] = eventos[dia] || []
+    eventos[dia].push ( {
+        titulo: titulo.value,
+        local: local.value,
+    })
+    //LOCAL STORAGE - .setItem() - pode fechar navegador --> guarda string
+    //SESSION STORAGE - .setItem() - temporário --> guarda string
+    localStorage.setItem("titulo", JSON.stringify(eventos));
+    alert(eventos);
+}

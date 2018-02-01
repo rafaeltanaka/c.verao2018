@@ -1,7 +1,22 @@
+*{
+    box-sizing: border-box;
+}
+.flex-center{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+.title{
+    text-align: center;
+    width: 100%;
+}
 .dia-container {
+    align-items: center;
     border-right: 1px solid black;
-    display: inline-block;
-    width: 20px;
+    display: flex;
+    height: calc(100vw / 7);
+    justify-content: center;
+    width: calc(100% / 7);
 }
 .dia-0 {
     border-left: 1px solid black;
@@ -35,11 +50,46 @@
 }
 #calendario{
     display: inline-block;
-    width: 148px;
+    width: 91vw;
 }
 .hoje{
     background-color: green;
 }
 #formulario{
     display: inline-block;
+}
+.linha{
+    align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+#overlay{
+    background-color: #AAAAAA;
+    display: none;
+    height: 100vh;
+    left: 0;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+}
+#formulario{
+    align-items: center;
+    background-color: #ffffff;
+    display: none;
+    flex-flow: column wrap;
+    height: 50vh;
+    justify-content: center;
+    left: 25vw;
+    position: absolute;
+    opacity: 1;
+    top: 25vh;
+    width: 50vw;
+}
+#salvar:hover{
+    opacity: 0.7;
+}
+#salvar:active{
+    opacity: 0.5;
 }
